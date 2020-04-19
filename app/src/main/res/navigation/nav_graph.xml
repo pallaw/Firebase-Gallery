@@ -1,0 +1,14 @@
+<?xml version="1.0" encoding="utf-8"?>
+<navigation xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/nav_graph"
+    android:label="@string/gallary_fragment_label"
+    app:startDestination="@id/GallaryFragment">
+
+    <fragment
+        android:id="@+id/GallaryFragment"
+        android:name="com.pallaw.firebasegallery.GalleryFragment"
+        android:label="@string/gallary_fragment_label"
+        tools:layout="@layout/fragment_gallery" />
+</navigation>
