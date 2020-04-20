@@ -1,4 +1,4 @@
-package com.pallaw.firebasegallery
+package com.pallaw.firebasegallery.ui.gallery
 
 
 import android.view.LayoutInflater
@@ -6,7 +6,8 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.pallaw.firebasegallery.GalleryFragment.OnListFragmentInteractionListener
+import com.pallaw.firebasegallery.R
+import com.pallaw.firebasegallery.ui.gallery.GalleryFragment.OnListFragmentInteractionListener
 import com.pallaw.firebasegallery.dummy.DummyContent.DummyItem
 import kotlinx.android.synthetic.main.item_photo.view.*
 

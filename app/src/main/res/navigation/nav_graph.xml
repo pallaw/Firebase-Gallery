@@ -8,7 +8,7 @@
 
     <fragment
         android:id="@+id/GallaryFragment"
-        android:name="com.pallaw.firebasegallery.GalleryFragment"
+        android:name="com.pallaw.firebasegallery.ui.gallery.GalleryFragment"
         android:label="@string/gallary_fragment_label"
         tools:layout="@layout/fragment_gallery" />
 </navigation>

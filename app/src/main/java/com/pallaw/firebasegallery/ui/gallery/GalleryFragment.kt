@@ -1,4 +1,4 @@
-package com.pallaw.firebasegallery
+package com.pallaw.firebasegallery.ui.gallery
 
 import android.content.Context
 import android.os.Bundle
@@ -6,18 +6,19 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
+import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.GridLayoutManager
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
+import com.pallaw.firebasegallery.R
 import com.pallaw.firebasegallery.dummy.DummyContent
 import com.pallaw.firebasegallery.dummy.DummyContent.DummyItem
+import kotlinx.android.synthetic.main.fragment_gallery.*
 
 class GalleryFragment : Fragment() {
 
+    private val galleryViewModel: GalleryViewModel by lazy { ViewModelProviders.of(this)[GalleryViewModel::class.java] }
     private lateinit var mStorageRef: StorageReference
-    private var columnCount = 2
 
     private var listener: OnListFragmentInteractionListener? = null
 
@@ -31,22 +32,26 @@ class GalleryFragment : Fragment() {
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
     ): View? {
-        val view = inflater.inflate(R.layout.fragment_gallery, container, false)
+        return inflater.inflate(R.layout.fragment_gallery, container, false)
+    }
 
-        // Set the adapter
-        if (view is RecyclerView) {
-            with(view) {
-                layoutManager = when {
-                    columnCount <= 1 -> LinearLayoutManager(context)
-                    else -> GridLayoutManager(context, columnCount)
-                }
-                adapter = GalleryAdapter(
-                    DummyContent.ITEMS,
-                    listener
-                )
-            }
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        //setup photo list
+        setupPhotoList()
+
+    }
+
+    private fun setupPhotoList() {
+
+        with(photo_list) {
+            layoutManager = GridLayoutManager(context, 2)
+            adapter = GalleryAdapter(
+                DummyContent.ITEMS,
+                listener
+            )
         }
-        return view
     }
 
     override fun onAttach(context: Context) {
