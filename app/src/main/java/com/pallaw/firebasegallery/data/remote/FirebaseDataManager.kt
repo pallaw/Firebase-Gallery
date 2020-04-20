@@ -4,12 +4,14 @@ import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
 import com.google.android.gms.tasks.OnSuccessListener
-import com.google.firebase.database.DatabaseReference
-import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.*
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.pallaw.firebasegallery.data.resources.Photo
+import io.reactivex.BackpressureStrategy
+import io.reactivex.Flowable
+import io.reactivex.FlowableEmitter
 import io.reactivex.Single
 
 
@@ -50,6 +52,27 @@ class FirebaseDataManager(
                 })
                 .addOnFailureListener { exception -> call.onError(exception) }
         }
+    }
+
+    fun getPhotos(): Flowable<List<Photo>> {
+       return Flowable.create({ emitter: FlowableEmitter<List<Photo>> ->
+           mDataBase.addListenerForSingleValueEvent(object : ValueEventListener {
+               override fun onCancelled(error: DatabaseError) {
+                   emitter.onError(error.toException())
+               }
+               override fun onDataChange(snapshot: DataSnapshot) {
+                   val photoList: ArrayList<Photo> = arrayListOf()
+                   for (ds in snapshot.getChildren()) {
+                       val snap: Photo? = ds.getValue(Photo::class.java)
+                       snap?.let {
+                            photoList.add(it)
+                       }
+                   }
+                   emitter.onNext(photoList)
+               }
+           })
+       }, BackpressureStrategy.LATEST)
+
     }
 
     companion object {

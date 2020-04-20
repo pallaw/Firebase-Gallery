@@ -52,11 +52,13 @@ class GalleryGridFragment : Fragment() {
 
         val subscribe = viewModel.getAllPhotos()
             .subscribeOn(Schedulers.io())
-            .observeOn(AndroidSchedulers.mainThread()).subscribe { photos ->
+            .observeOn(AndroidSchedulers.mainThread()).subscribe({ photos ->
                 photoList.clear()
                 photoList.addAll(photos)
                 galleryGridAdapter.notifyDataSetChanged()
-            }
+            },{
+
+            })
     }
 
     private fun initViewModel() {
