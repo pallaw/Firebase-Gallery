@@ -27,6 +27,7 @@ class GalleryActivity : AppCompatActivity(),
 
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mFileBucketRef: StorageReference
+
     private val viewModel: PhotoViewModel by lazy {
         ViewModelProvider(
             this,
@@ -66,22 +67,6 @@ class GalleryActivity : AppCompatActivity(),
     private fun initFirebase() {
         mDatabaseRef = FirebaseDatabase.getInstance().getReference("images")
         mFileBucketRef = FirebaseStorage.getInstance().getReference("images")
-    }
-
-    override fun onCreateOptionsMenu(menu: Menu): Boolean {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        menuInflater.inflate(R.menu.menu_main, menu)
-        return true
-    }
-
-    override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        // Handle action bar item clicks here. The action bar will
-        // automatically handle clicks on the Home/Up button, so long
-        // as you specify a parent activity in AndroidManifest.xml.
-        return when (item.itemId) {
-            R.id.action_settings -> true
-            else -> super.onOptionsItemSelected(item)
-        }
     }
 
     override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {

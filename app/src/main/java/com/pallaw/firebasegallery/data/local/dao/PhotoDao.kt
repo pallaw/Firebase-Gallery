@@ -1,11 +1,8 @@
 package com.pallaw.firebasegallery.data.local.dao
 
-import androidx.room.Dao
-import androidx.room.Delete
-import androidx.room.Insert
-import androidx.room.Query
+import androidx.room.*
 import com.pallaw.firebasegallery.data.resources.Photo
-import io.reactivex.Flowable
+import io.reactivex.Observable
 import io.reactivex.Single
 
 /**
@@ -13,16 +10,18 @@ import io.reactivex.Single
  */
 @Dao
 interface PhotoDao {
-    @Insert
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     fun insert(photo: Photo)
+
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
+    fun insertAll(users: List<Photo>)
 
     @Delete
     fun delete(photo: Photo)
-
 
     //    @Query("DELETE FROM images")
 //    fun deleteAll(photo: Photo)
 //
     @Query("SELECT * from images ")
-    fun getAllPhotos(): Flowable<List<Photo>>
+    fun getAllPhotos(): Observable<List<Photo>>
 }

@@ -9,10 +9,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.pallaw.firebasegallery.data.resources.Photo
-import io.reactivex.BackpressureStrategy
-import io.reactivex.Flowable
-import io.reactivex.FlowableEmitter
-import io.reactivex.Single
+import io.reactivex.*
 
 
 /**
@@ -54,24 +51,25 @@ class FirebaseDataManager(
         }
     }
 
-    fun getPhotos(): Flowable<List<Photo>> {
-       return Flowable.create({ emitter: FlowableEmitter<List<Photo>> ->
-           mDataBase.addListenerForSingleValueEvent(object : ValueEventListener {
-               override fun onCancelled(error: DatabaseError) {
-                   emitter.onError(error.toException())
-               }
-               override fun onDataChange(snapshot: DataSnapshot) {
-                   val photoList: ArrayList<Photo> = arrayListOf()
-                   for (ds in snapshot.getChildren()) {
-                       val snap: Photo? = ds.getValue(Photo::class.java)
-                       snap?.let {
+    fun getPhotos(): Observable<List<Photo>> {
+        return Observable.create<List<Photo>> {emitter ->
+            mDataBase.addListenerForSingleValueEvent(object : ValueEventListener {
+                override fun onCancelled(error: DatabaseError) {
+                    emitter.onError(error.toException())
+                }
+                override fun onDataChange(snapshot: DataSnapshot) {
+                    val photoList: ArrayList<Photo> = arrayListOf()
+                    for (ds in snapshot.getChildren()) {
+                        val snap: Photo? = ds.getValue(Photo::class.java)
+                        snap?.let {
                             photoList.add(it)
-                       }
-                   }
-                   emitter.onNext(photoList)
-               }
-           })
-       }, BackpressureStrategy.LATEST)
+                        }
+                    }
+
+                    emitter.onNext(photoList)
+                }
+            })
+        }
 
     }
 
