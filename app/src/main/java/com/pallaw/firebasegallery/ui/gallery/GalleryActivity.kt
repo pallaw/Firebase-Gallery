@@ -16,28 +16,28 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.pallaw.firebasegallery.R
 import com.pallaw.firebasegallery.dummy.DummyContent
-import com.pallaw.firebasegallery.viewmodel.MainActivityViewModel
-import com.pallaw.firebasegallery.viewmodel.factory.MainViewModelFactory
-import io.reactivex.rxjava3.android.schedulers.AndroidSchedulers
+import com.pallaw.firebasegallery.viewmodel.PhotoViewModel
+import com.pallaw.firebasegallery.viewmodel.factory.PhotoViewModelFactory
+import io.reactivex.android.schedulers.AndroidSchedulers
 import kotlinx.android.synthetic.main.activity_main.*
 
 
-class MainActivity : AppCompatActivity(),
-    GalleryFragment.OnListFragmentInteractionListener {
+class GalleryActivity : AppCompatActivity(),
+    GalleryGridFragment.OnListFragmentInteractionListener {
 
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mFileBucketRef: StorageReference
-    private lateinit var viewModel: MainActivityViewModel
+    private val viewModel: PhotoViewModel by lazy {
+        ViewModelProvider(
+            this,
+            PhotoViewModelFactory(application)
+        ).get(PhotoViewModel::class.java)
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         setSupportActionBar(toolbar)
-
-        viewModel = ViewModelProvider(
-            this,
-            MainViewModelFactory(application)
-        ).get(MainActivityViewModel::class.java)
 
         // init firebase variables
         initFirebase()
@@ -109,9 +109,9 @@ class MainActivity : AppCompatActivity(),
     }
 
     private fun uploadImageToFirebase(file: Uri) {
-
         viewModel.uploadNewPhoto(file).observeOn(AndroidSchedulers.mainThread()).subscribe({
-            Toast.makeText(applicationContext, "Image uploaded successfully", Toast.LENGTH_LONG).show()
+            Toast.makeText(applicationContext, "Image uploaded successfully", Toast.LENGTH_LONG)
+                .show()
         }, {
             Toast.makeText(applicationContext, "Image uploaded error", Toast.LENGTH_LONG).show()
         })

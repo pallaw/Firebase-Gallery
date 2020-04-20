@@ -10,7 +10,7 @@ import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.google.firebase.storage.UploadTask
 import com.pallaw.firebasegallery.data.resources.Photo
-import io.reactivex.rxjava3.core.Single
+import io.reactivex.Single
 
 
 /**

@@ -8,5 +8,5 @@
     android:layout_height="match_parent"
     app:layoutManager="androidx.recyclerview.widget.StaggeredGridLayoutManager"
     app:spanCount="2"
-    tools:context="com.pallaw.firebasegallery.ui.gallery.GalleryFragment"
+    tools:context="com.pallaw.firebasegallery.ui.gallery.GalleryGridFragment"
     tools:listitem="@layout/item_photo" />

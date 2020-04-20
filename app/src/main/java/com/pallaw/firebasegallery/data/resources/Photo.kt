@@ -20,5 +20,6 @@ data class Photo(
     @ColumnInfo(name = "name")
     var name: String = "",
     @ColumnInfo(name = "url")
-    var url: String = ""
+    var url: String = "",
+    var fileUri: String? = null
 )

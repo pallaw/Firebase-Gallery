@@ -30,7 +30,7 @@ abstract class PhotoDatabase : RoomDatabase() {
                     context.applicationContext,
                     PhotoDatabase::class.java,
                     "photo_database"
-                ).build()
+                ).fallbackToDestructiveMigration().build()
                 INSTANCE = instance
                 return instance
             }

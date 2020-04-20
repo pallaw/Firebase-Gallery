@@ -5,9 +5,9 @@ import androidx.lifecycle.MutableLiveData
 import com.pallaw.firebasegallery.data.local.dao.PhotoDao
 import com.pallaw.firebasegallery.data.remote.FirebaseDataManager
 import com.pallaw.firebasegallery.data.resources.Photo
-import io.reactivex.rxjava3.annotations.NonNull
-import io.reactivex.rxjava3.core.Single
-import io.reactivex.rxjava3.schedulers.Schedulers
+import io.reactivex.Flowable
+import io.reactivex.Single
+import io.reactivex.schedulers.Schedulers
 
 /**
  * Created by Pallaw Pathak on 20/04/20. - https://www.linkedin.com/in/pallaw-pathak-a6a324a1/
@@ -35,5 +35,9 @@ class PhotoRepository(
                     }
                 )
         }
+    }
+
+    fun getPhotos(): Flowable<List<Photo>> {
+        return photoDao.getAllPhotos()
     }
 }

@@ -1,20 +1,23 @@
 package com.pallaw.firebasegallery.ui.gallery
 
 
+import android.net.Uri
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
+import com.bumptech.glide.Glide
 import com.pallaw.firebasegallery.R
-import com.pallaw.firebasegallery.ui.gallery.GalleryFragment.OnListFragmentInteractionListener
+import com.pallaw.firebasegallery.data.resources.Photo
 import com.pallaw.firebasegallery.dummy.DummyContent.DummyItem
+import com.pallaw.firebasegallery.ui.gallery.GalleryGridFragment.OnListFragmentInteractionListener
 import kotlinx.android.synthetic.main.item_photo.view.*
 
-class GalleryAdapter(
-    private val mValues: List<DummyItem>,
+class GalleryGridAdapter(
+    private val mValues: List<Photo>,
     private val mListener: OnListFragmentInteractionListener?
-) : RecyclerView.Adapter<GalleryAdapter.ViewHolder>() {
+) : RecyclerView.Adapter<GalleryGridAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
@@ -48,10 +51,18 @@ class GalleryAdapter(
 
     inner class ViewHolder(val mView: View) : RecyclerView.ViewHolder(mView) {
 
-        fun bindData(item: DummyItem) {
-
-        }
-
         val image: ImageView = mView.gallary_item_image
+
+        fun bindData(photo: Photo) {
+            if (null == photo.fileUri) {
+                Glide.with(mView.context)
+                    .load(photo.url)
+                    .into(image)
+            } else {
+                Glide.with(mView.context)
+                    .load(Uri.parse(photo.fileUri))
+                    .into(image)
+            }
+        }
     }
 }
