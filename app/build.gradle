@@ -88,5 +88,7 @@ dependencies {
     //timber log
     implementation 'com.jakewharton.timber:timber:4.7.1'
 
+    implementation 'com.github.chrisbanes:PhotoView:2.3.0'
+
 
 }

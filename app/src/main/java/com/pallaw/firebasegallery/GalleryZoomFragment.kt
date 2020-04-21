@@ -6,8 +6,10 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
+import com.pallaw.firebasegallery.Util.loadImage
 import com.pallaw.firebasegallery.viewmodel.PhotoViewModel
 import com.pallaw.firebasegallery.viewmodel.factory.PhotoViewModelFactory
+import kotlinx.android.synthetic.main.fragment_gallery_zoom.*
 
 /**
  * A simple [Fragment] subclass.
@@ -36,6 +38,7 @@ class GalleryZoomFragment : Fragment() {
             viewModel.updateTitle(photo.name)
             viewModel.enableFab(false)
             viewModel.enableBackButton(true)
+            photo_zoom.loadImage(photo.url)
         }
     }
 
