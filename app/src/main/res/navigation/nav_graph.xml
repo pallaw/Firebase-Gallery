@@ -13,7 +13,9 @@
         tools:layout="@layout/fragment_gallery" >
         <action
             android:id="@+id/toGalleryZoom"
-            app:destination="@id/galleryZoom" />
+            app:destination="@id/galleryZoom"
+            app:enterAnim="@anim/enter_from_right"
+            app:popExitAnim="@anim/exit_to_right" />
     </fragment>
     <fragment
         android:id="@+id/galleryZoom"

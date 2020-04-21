@@ -1,10 +1,14 @@
 package com.pallaw.firebasegallery.ui.gallery
 
+import android.animation.ObjectAnimator
+import android.animation.PropertyValuesHolder
 import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.view.MenuItem
+import android.view.View
+import android.view.animation.OvershootInterpolator
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.Observer
@@ -16,6 +20,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.pallaw.firebasegallery.R
+import com.pallaw.firebasegallery.Util.getTitleView
 import com.pallaw.firebasegallery.data.resources.Photo
 import com.pallaw.firebasegallery.viewmodel.PhotoViewModel
 import com.pallaw.firebasegallery.viewmodel.factory.PhotoViewModelFactory
@@ -51,12 +56,14 @@ class GalleryActivity : AppCompatActivity(),
 
     override fun onResume() {
         super.onResume()
-
         supportActionBar?.let { actionBar ->
 
             //set title
             viewModel.title.observe(this,
-                Observer<String> { title -> actionBar.title = title })
+                Observer<String> { title ->
+                    actionBar.title = title
+                    animateToolbarTitle()
+                })
 
             //toggle back button visibility
             viewModel.backButtonVisibility.observe(this,
@@ -66,6 +73,14 @@ class GalleryActivity : AppCompatActivity(),
         // toggle fab button visibility
         viewModel.fabVisibility.observe(this,
             Observer<Boolean> { enable -> if (enable) fab.show() else fab.hide() })
+    }
+
+    private fun animateToolbarTitle() {
+        val scaleX = PropertyValuesHolder.ofFloat(View.TRANSLATION_X, 100f, 0f)
+        val alpha = PropertyValuesHolder.ofFloat(View.ALPHA, 0f, 1f)
+        ObjectAnimator.ofPropertyValuesHolder(toolbar.getTitleView(), scaleX, alpha).apply {
+            interpolator = OvershootInterpolator()
+        }.setDuration(400).start()
     }
 
     private fun setActions() {
@@ -125,7 +140,7 @@ class GalleryActivity : AppCompatActivity(),
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
-        when(item.itemId){
+        when (item.itemId) {
             android.R.id.home -> {
                 onBackPressed()
             }

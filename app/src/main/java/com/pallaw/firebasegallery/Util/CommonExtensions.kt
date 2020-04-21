@@ -1,7 +1,10 @@
 package com.pallaw.firebasegallery.Util
 
 import android.net.Uri
+import android.view.View
 import android.widget.ImageView
+import android.widget.TextView
+import androidx.appcompat.widget.Toolbar
 import com.bumptech.glide.Glide
 import com.pallaw.firebasegallery.R
 
@@ -23,4 +26,12 @@ fun ImageView.loadImage(uri: Uri) {
         .placeholder(R.drawable.ic_loading)
         .error(R.drawable.ic_broken)
         .into(this)
+}
+
+fun Toolbar.getTitleView(): View {
+    for (counter in 0..this.childCount - 1) {
+        val childAt = getChildAt(counter)
+        if (childAt is TextView) return childAt
+    }
+    return View(this.context)
 }
