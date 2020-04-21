@@ -9,14 +9,12 @@ import android.widget.Toast
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.GridLayoutManager
-import com.google.android.material.snackbar.Snackbar
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.pallaw.firebasegallery.R
 import com.pallaw.firebasegallery.Util.LogTags
 import com.pallaw.firebasegallery.data.resources.Photo
 import com.pallaw.firebasegallery.data.resources.PhotoList
-import com.pallaw.firebasegallery.dummy.DummyContent.DummyItem
 import com.pallaw.firebasegallery.viewmodel.PhotoViewModel
 import com.pallaw.firebasegallery.viewmodel.factory.PhotoViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -35,7 +33,7 @@ class GalleryGridFragment : Fragment() {
     val compositeDisposable = CompositeDisposable()
     val photoList: ArrayList<Photo> = arrayListOf()
 
-    private var listener: OnListFragmentInteractionListener? = null
+    private var listener: onGalleryItemClickListener? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -112,7 +110,7 @@ class GalleryGridFragment : Fragment() {
 
     override fun onAttach(context: Context) {
         super.onAttach(context)
-        if (context is OnListFragmentInteractionListener) {
+        if (context is onGalleryItemClickListener) {
             listener = context
         } else {
             throw RuntimeException(context.toString() + " must implement OnListFragmentInteractionListener")
@@ -125,8 +123,8 @@ class GalleryGridFragment : Fragment() {
         compositeDisposable.clear()
     }
 
-    interface OnListFragmentInteractionListener {
-        fun onListFragmentInteraction(item: DummyItem?)
+    interface onGalleryItemClickListener {
+        fun onGalleryItemClicked(item: Photo)
     }
 
 }

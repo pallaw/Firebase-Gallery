@@ -4,8 +4,6 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
-import android.view.Menu
-import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
 import androidx.lifecycle.ViewModelProvider
@@ -15,7 +13,7 @@ import com.google.firebase.database.FirebaseDatabase
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 import com.pallaw.firebasegallery.R
-import com.pallaw.firebasegallery.dummy.DummyContent
+import com.pallaw.firebasegallery.data.resources.Photo
 import com.pallaw.firebasegallery.viewmodel.PhotoViewModel
 import com.pallaw.firebasegallery.viewmodel.factory.PhotoViewModelFactory
 import io.reactivex.android.schedulers.AndroidSchedulers
@@ -23,7 +21,7 @@ import kotlinx.android.synthetic.main.activity_main.*
 
 
 class GalleryActivity : AppCompatActivity(),
-    GalleryGridFragment.OnListFragmentInteractionListener {
+    GalleryGridFragment.onGalleryItemClickListener {
 
     private lateinit var mDatabaseRef: DatabaseReference
     private lateinit var mFileBucketRef: StorageReference
@@ -69,8 +67,8 @@ class GalleryActivity : AppCompatActivity(),
         mFileBucketRef = FirebaseStorage.getInstance().getReference("images")
     }
 
-    override fun onListFragmentInteraction(item: DummyContent.DummyItem?) {
-        TODO("Not yet implemented")
+    override fun onGalleryItemClicked(item: Photo) {
+
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

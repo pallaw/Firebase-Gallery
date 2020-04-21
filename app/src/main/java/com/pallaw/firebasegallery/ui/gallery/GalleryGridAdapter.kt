@@ -7,26 +7,25 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
 import androidx.recyclerview.widget.RecyclerView
-import com.bumptech.glide.Glide
 import com.pallaw.firebasegallery.R
+import com.pallaw.firebasegallery.Util.loadImage
 import com.pallaw.firebasegallery.data.resources.Photo
-import com.pallaw.firebasegallery.dummy.DummyContent.DummyItem
-import com.pallaw.firebasegallery.ui.gallery.GalleryGridFragment.OnListFragmentInteractionListener
+import com.pallaw.firebasegallery.ui.gallery.GalleryGridFragment.onGalleryItemClickListener
 import kotlinx.android.synthetic.main.item_photo.view.*
 
 class GalleryGridAdapter(
     private val mValues: List<Photo>,
-    private val mListener: OnListFragmentInteractionListener?
+    private val mListener: onGalleryItemClickListener?
 ) : RecyclerView.Adapter<GalleryGridAdapter.ViewHolder>() {
 
     private val mOnClickListener: View.OnClickListener
 
     init {
         mOnClickListener = View.OnClickListener { v ->
-            val item = v.tag as DummyItem
+            val item = v.tag as Photo
             // Notify the active callbacks interface (the activity, if the fragment is attached to
             // one) that an item has been selected.
-            mListener?.onListFragmentInteraction(item)
+            mListener?.onGalleryItemClicked(item)
         }
     }
 
@@ -55,13 +54,9 @@ class GalleryGridAdapter(
 
         fun bindData(photo: Photo) {
             if (null == photo.fileUri) {
-                Glide.with(mView.context)
-                    .load(photo.url)
-                    .into(image)
+                image.loadImage(photo.url)
             } else {
-                Glide.with(mView.context)
-                    .load(Uri.parse(photo.fileUri))
-                    .into(image)
+                image.loadImage(Uri.parse(photo.fileUri))
             }
         }
     }
