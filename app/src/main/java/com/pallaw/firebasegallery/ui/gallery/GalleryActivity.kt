@@ -4,9 +4,12 @@ import android.app.Activity
 import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
+import android.view.MenuItem
 import android.widget.Toast
 import androidx.appcompat.app.AppCompatActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
+import androidx.navigation.findNavController
 import com.github.dhaval2404.imagepicker.ImagePicker
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
@@ -28,7 +31,7 @@ class GalleryActivity : AppCompatActivity(),
 
     private val viewModel: PhotoViewModel by lazy {
         ViewModelProvider(
-            this,
+            viewModelStore,
             PhotoViewModelFactory(application)
         ).get(PhotoViewModel::class.java)
     }
@@ -43,6 +46,26 @@ class GalleryActivity : AppCompatActivity(),
 
         //setActions
         setActions()
+
+    }
+
+    override fun onResume() {
+        super.onResume()
+
+        supportActionBar?.let { actionBar ->
+
+            //set title
+            viewModel.title.observe(this,
+                Observer<String> { title -> actionBar.title = title })
+
+            //toggle back button visibility
+            viewModel.backButtonVisibility.observe(this,
+                Observer<Boolean> { enable -> actionBar.setDisplayHomeAsUpEnabled(enable) })
+        }
+
+        // toggle fab button visibility
+        viewModel.fabVisibility.observe(this,
+            Observer<Boolean> { enable -> if (enable) fab.show() else fab.hide() })
     }
 
     private fun setActions() {
@@ -54,7 +77,7 @@ class GalleryActivity : AppCompatActivity(),
     private fun pickImage() {
         ImagePicker.with(this)
             .crop()                    //Crop image(Optional), Check Customization for more option
-            .compress(1024)            //Final image size will be less than 1 MB(Optional)
+            .compress(1024)   //Final image size will be less than 1 MB(Optional)
             .maxResultSize(
                 1080,
                 1080
@@ -68,7 +91,8 @@ class GalleryActivity : AppCompatActivity(),
     }
 
     override fun onGalleryItemClicked(item: Photo) {
-
+        val toGalleryZoom = GalleryGridFragmentDirections.toGalleryZoom(item)
+        findNavController(R.id.nav_host_fragment).navigate(toGalleryZoom)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
@@ -98,6 +122,15 @@ class GalleryActivity : AppCompatActivity(),
         }, {
             Toast.makeText(applicationContext, "Image uploaded error", Toast.LENGTH_LONG).show()
         })
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        when(item.itemId){
+            android.R.id.home -> {
+                onBackPressed()
+            }
+        }
+        return true
     }
 
 }

@@ -5,6 +5,7 @@ import androidx.room.ColumnInfo
 import androidx.room.Entity
 import androidx.room.PrimaryKey
 import com.google.firebase.database.IgnoreExtraProperties
+import java.io.Serializable
 
 
 /**
@@ -22,4 +23,4 @@ data class Photo(
     @ColumnInfo(name = "url")
     var url: String = "",
     var fileUri: String? = null
-)
+) : Serializable

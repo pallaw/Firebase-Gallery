@@ -54,9 +54,17 @@ class GalleryGridFragment : Fragment() {
         //init viewmodel
         initViewModel()
 
+        //update title
+        updateToolbar()
+
         //setup photo list
         setupPhotoList()
 
+        //fetch photo list
+        fetchPhotos()
+    }
+
+    private fun fetchPhotos() {
         compositeDisposable.add(
             viewModel.getAllPhotos()
                 .subscribeOn(Schedulers.io())
@@ -69,6 +77,12 @@ class GalleryGridFragment : Fragment() {
                     showError()
                 })
         )
+    }
+
+    private fun updateToolbar() {
+        viewModel.updateTitle(getString(R.string.gallary_fragment_label))
+        viewModel.enableFab(true)
+        viewModel.enableBackButton(false)
     }
 
     private fun showError() {
@@ -91,7 +105,7 @@ class GalleryGridFragment : Fragment() {
     private fun initViewModel() {
         activity?.let {
             viewModel = ViewModelProvider(
-                viewModelStore,
+                it.viewModelStore,
                 PhotoViewModelFactory(it.application)
             ).get(PhotoViewModel::class.java)
         }
